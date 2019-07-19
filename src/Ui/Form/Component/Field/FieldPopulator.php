@@ -63,8 +63,21 @@ class FieldPopulator
              */
             if (!isset($field['value']) && $entry instanceof EloquentModel && $entry->getId()) {
                 if ($locale = array_get($field, 'locale')) {
-                    $field['value'] = $entry->translateOrDefault($locale)
-                        ->getAttribute($field['field']);
+                    
+                    // Support entries specifying whether an attribute should
+                    // not use the default locale's value for a field when no
+                    // translation row exists; like when a new locale is added.
+                    if (method_exists($entry, 'attributesWithoutDefault') &&
+                        in_array($field['field'], $entry->attributesWithoutDefault())) {
+                        $field['value'] = ($translation = $entry->translate($locale))
+                            ? $translation->getAttribute($field['field']) : null;
+
+                    // Default Pyro behavior
+                    } else {
+                        $field['value'] = $entry->translateOrDefault($locale)
+                            ->getAttribute($field['field']);
+                    }
+                    
                 } else {
                     $field['value'] = $entry->{$field['field']};
                 }
