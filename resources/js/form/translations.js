@@ -1,5 +1,17 @@
 $(function () {
 
+    $('body').on('click', '[data-toggle="dropdown"]', function (e) {
+        var current = $(this);
+        var menu = current.next();
+        $(menu).css({ "bottom": "auto", "top": "100%" });
+
+        setTimeout(function () {
+            if ($(menu).outerHeight() + $(menu).offset().top >= $(window).scrollTop() + $(window).height()) {
+                $(menu).css({ 'bottom': '100%', 'top': 'auto' });
+            }
+        }, 0)
+    });
+
     $('body').on('click', '[data-toggle="lang"]', function (e) {
 
         e.preventDefault();
