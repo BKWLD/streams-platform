@@ -81,6 +81,9 @@ $(function () {
             case 'fi':
                 toggleFeaturedTypesLocale('fi')
                 break;
+            case 'nz':
+                toggleFeaturedTypesLocale('nz')
+                break;
             case 'en':
                 $('.featured-field').parent().show();
                 $('[class*="featured"]:not(.featured-field).multiple-field_type').each(function (i, el) {
